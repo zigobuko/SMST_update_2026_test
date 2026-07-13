@@ -2,7 +2,7 @@
 
 # Define GitHub repository owner and name
 owner="zigobuko"
-repo="SMST"
+repo="SMST_update_2026_test"
 pass=$1
 
 # Create temp folder
