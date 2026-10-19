@@ -58,13 +58,18 @@ if [ -z "$app_file" ]; then
     exit 1
 fi
 
-# Check if the same file exists in the Downloads folder
-if [ -e ~/Downloads/"$(basename "$app_file")" ]; then
-    echo "File $(basename "$app_file") already exists in Downloads."
-else
-    # Copy the .app file to Downloads
-    cp -R "$app_file" ~/Downloads/
+app_name=$(basename "$app_file")
+
+# Skip if the app already exists in Downloads
+if [ -e ~/Downloads/"$app_name" ]; then
+    echo "File $app_name already exists in Downloads."
+    hdiutil detach "$mount_point" >/dev/null
+    rm -rf "$temp_folder"
+    exit 0
 fi
+
+# Copy the .app file to Downloads
+cp -R "$app_file" ~/Downloads/
 
 # Unmount the DMG
 hdiutil detach "$mount_point" >/dev/null
@@ -72,4 +77,4 @@ hdiutil detach "$mount_point" >/dev/null
 # Delete the temp folder
 rm -rf "$temp_folder"
 
-echo "Downloaded and extracted successfully."
+echo "Downloaded successfully. $app_name is in your Downloads folder."
